@@ -26,7 +26,19 @@ jobs:
   Linear:
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    permissions:
+      contents: read
+      pull-requests: write
+
     steps:
+      - uses: mobsuccess-devops/github-actions-linear@master
+        id: check-pr-title-compliance
+        if: github.event.pull_request.draft == false
+        with:
+          action: check-pr-title-compliance
+          linearApiKey: ${{ secrets.LINEAR_API_KEY }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: mobsuccess-devops/github-actions-linear@master
         with:
           action: check-linear-state
